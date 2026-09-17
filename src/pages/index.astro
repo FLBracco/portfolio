@@ -1,47 +1,24 @@
 ---
-import '../styles/global.css';
-import { projects } from '../data/projects';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import Footer from "../components/Footer.astro";
+import { projects } from "../data/projects";
 ---
 
-<html lang="es">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Portfolio</title>
-	</head>
-	<body class="min-h-screen bg-slate-950 text-slate-50">
-		<main class="mx-auto max-w-3xl px-6 py-16">
-			<h1 class="text-4xl font-bold">Fabricio Bracco</h1>
-			<p class="mt-2 text-slate-400">Proyectos</p>
-
-			<ul class="mt-10 space-y-6">
-				{
-					projects.map((project) => (
-						<li class="rounded-lg border border-slate-800 bg-slate-900 p-6">
-							<h2 class="text-xl font-semibold">{project.name}</h2>
-							<p class="mt-2 text-slate-300">{project.description}</p>
-							<ul class="mt-4 flex flex-wrap gap-2">
-								{project.stack.map((tech) => (
-									<li class="rounded-full bg-slate-800 px-3 py-1 text-xs text-slate-300">
-										{tech}
-									</li>
-								))}
-							</ul>
-							<a
-								href={project.repoUrl}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="mt-4 inline-block text-sm font-medium text-indigo-400 hover:text-indigo-300"
-							>
-								Ver repositorio →
-							</a>
-						</li>
-					))
-				}
-			</ul>
-		</main>
-	</body>
-</html>
+<BaseLayout>
+	<Header />
+	<main>
+		<Hero />
+		<section id="proyectos" class="border-t border-border">
+			<div class="mx-auto max-w-5xl px-6 py-24">
+				<h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Proyectos</h2>
+				<ul class="mt-10 grid gap-6 sm:grid-cols-2">
+					{projects.map((project) => <ProjectCard project={project} />)}
+				</ul>
+			</div>
+		</section>
+	</main>
+	<Footer />
+</BaseLayout>

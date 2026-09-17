@@ -1,0 +1,42 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = "Fabricio Bracco — Desarrollador de Software",
+	description = "Portfolio de Fabricio Bracco, desarrollador de software. Proyectos, stack y contacto.",
+} = Astro.props;
+---
+
+<html lang="es">
+	<head>
+		<script is:inline>
+			(function () {
+				const stored = localStorage.getItem("theme");
+				const theme =
+					stored ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+				document.documentElement.setAttribute("data-theme", theme);
+			})();
+		</script>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
+		<title>{title}</title>
+	</head>
+	<body class="min-h-screen bg-bg font-sans text-fg antialiased">
+		<slot />
+	</body>
+</html>
