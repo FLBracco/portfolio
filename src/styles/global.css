@@ -13,13 +13,13 @@
 }
 
 :root[data-theme="dark"] {
-	--color-bg: #0a0a0a;
-	--color-surface: #171717;
-	--color-fg: #f8fafc;
-	--color-muted: #a1a1aa;
-	--color-border: #27272a;
+	--color-bg: #121316;
+	--color-surface: #1b1d21;
+	--color-fg: #edeef0;
+	--color-muted: #9a9da3;
+	--color-border: #2d2f34;
 	--color-accent: #4ade80;
-	--color-accent-fg: #0a0a0a;
+	--color-accent-fg: #121316;
 }
 
 html {
@@ -36,6 +36,20 @@ body {
 	transition:
 		background-color 200ms ease-out,
 		color 200ms ease-out;
+}
+
+.bg-ambient {
+	background-image:
+		radial-gradient(
+			640px circle at 15% 10%,
+			color-mix(in oklch, var(--color-accent) 14%, transparent),
+			transparent 60%
+		),
+		radial-gradient(
+			560px circle at 85% 70%,
+			color-mix(in oklch, var(--color-accent) 7%, transparent),
+			transparent 60%
+		);
 }
 
 @media (prefers-reduced-motion: reduce) {
