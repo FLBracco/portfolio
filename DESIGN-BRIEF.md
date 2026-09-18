@@ -38,10 +38,10 @@ _Generado por /design-grill el 2026-09-17. Actualizar este archivo cuando cambie
 
 ## Component Style
 - **Corner radius:** Recto/casi recto (0–4px).
-- **Elevation:** Plano — sin sombras, solo bordes finos de 1px.
+- **Elevation:** Plano — sin sombras, solo bordes finos de 1px. **Excepción (2026-09-18):** la tarjeta de proyecto activa/en foco en la sección Proyectos usa una sombra sutil con tinte del acento (`--shadow-accent` en `global.css`) para destacarla dentro del carrusel (mobile) y el grid (desktop). Las cards de Proyectos usan `rounded-lg` (8px, por pedido explícito del usuario de más redondeo) y sus tags de stack `rounded` (4px, mismo radio que los botones del sitio) en vez de esquina recta, para que no se vean "cuadradas". Esto supera el rango 0–4px definido originalmente para el resto del sitio — excepción puntual solo para Proyectos. Ver Decisions Made.
 - **Density:** Balanceada (ni muy densa tipo dashboard, ni excesivamente espaciosa tipo landing de marketing).
 - **Borders:** Livianos, 1px, color neutro sutil (se aclaran/oscurecen según el tema).
-- **Overall:** Recto, plano, bordes livianos — mismo registro técnico que la referencia, sin sombras ni curvas pronunciadas.
+- **Overall:** Recto, plano, bordes livianos — mismo registro técnico que la referencia, sin sombras ni curvas pronunciadas, salvo la excepción puntual de Proyectos indicada arriba.
 
 ## Animation
 - **Level:** Sutil (150–200ms en transiciones de hover, fade-in al hacer scroll, transición de color al cambiar de tema).
@@ -54,17 +54,18 @@ _Generado por /design-grill el 2026-09-17. Actualizar este archivo cuando cambie
 ## Decisions Made
 | Decision | What was decided | Why |
 |----------|-----------------|-----|
-| Secciones | Hero + Proyectos + Contacto, una sola página | Portfolio simple, sin backend; evita mantener contenido de "About/Experience" que requiere redacción extra |
+| Secciones | Hero + Stack + Proyectos + Contacto, una sola página | Portfolio simple, sin backend; evita mantener contenido de "About/Experience" que requiere redacción extra. Excepción (2026-09-18): se sumó "Stack" — lista de tecnologías autogenerada desde `projects.ts` (sin texto nuevo que redactar ni mantener), no una sección de contenido libre |
 | Color de acento | Verde (`#16A34A` light / `#4ADE80` dark) | El usuario pidió mantener el estilo de la imagen de referencia |
 | Estilo de componentes | Recto y plano, sin sombras | Alineado con "minimalista" pedido por el usuario |
 | Animación | Sutil | Pulido sin distraer, coherente con personalidad "tranquilo" |
 | Tipografía | Inter, un solo font | Minimalista, gratis, gran soporte de español |
+| Sección Proyectos | Grid con acento (sombra + borde acento en hover/focus) en desktop; carrusel horizontal con snap-scroll, flechas y dots, misma acentuación en la tarjeta activa, en mobile | El usuario pidió destacar visualmente la tarjeta con sombreado; se acordó una excepción puntual a "sin sombras" solo para esta sección, confirmada explícitamente por el usuario el 2026-09-18 |
 
 ## Ruled Out
 | Direction | Why it was rejected |
 |-----------|-------------------|
 | Nav completa tipo CV (About/Technologies/Experience/Articles) | El usuario eligió la opción simple de 3 secciones — evita contenido adicional a mantener |
-| Componentes redondeados con sombra | El usuario prefirió el estilo recto/plano de la referencia |
+| Componentes redondeados con sombra | El usuario prefirió el estilo recto/plano de la referencia. Nota (2026-09-18): se agregó sombra puntual solo a la tarjeta activa de Proyectos (ver Decisions Made); las esquinas se mantienen rectas, no se adoptó "redondeado + sombra" en general |
 | Animación mínima (estática) | El usuario prefirió "sutil" para que el toggle de tema y el scroll se sientan pulidos |
 
 ## Open Questions

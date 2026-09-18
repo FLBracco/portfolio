@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Header from "../components/Header.astro";
 import Hero from "../components/Hero.astro";
+import Stack from "../components/Stack.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import Footer from "../components/Footer.astro";
 import { projects } from "../data/projects";
@@ -11,14 +12,144 @@ import { projects } from "../data/projects";
 	<Header />
 	<main>
 		<Hero />
+		<Stack />
 		<section id="proyectos">
 			<div class="mx-auto max-w-5xl px-6 py-24">
 				<h2 class="text-2xl font-extrabold tracking-tight sm:text-3xl">Proyectos</h2>
-				<ul class="mt-10 grid gap-6 sm:grid-cols-2">
+				<ul
+					id="project-carousel"
+					tabindex="0"
+					role="region"
+					aria-label="Carrusel de proyectos"
+					class="mt-10 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 outline-none [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-accent/70 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 sm:snap-none [&::-webkit-scrollbar]:hidden"
+				>
 					{projects.map((project) => <ProjectCard project={project} />)}
 				</ul>
+				<div class="mt-6 flex items-center justify-center gap-4 sm:hidden">
+					<button
+						id="carousel-prev"
+						type="button"
+						aria-label="Proyecto anterior"
+						class="grid size-9 place-items-center rounded border border-border/70 text-fg transition-colors duration-150 ease-out hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-30"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="size-4"
+							aria-hidden="true"
+						>
+							<path d="M15 18l-6-6 6-6" />
+						</svg>
+					</button>
+					<div class="flex items-center gap-2">
+						{
+							projects.map((project, index) => (
+								<button
+									type="button"
+									data-carousel-dot
+									data-index={index}
+									aria-label={`Ir al proyecto: ${project.name}`}
+									class="size-2 rounded-full bg-border transition-colors duration-150 ease-out data-[active=true]:bg-accent"
+								/>
+							))
+						}
+					</div>
+					<button
+						id="carousel-next"
+						type="button"
+						aria-label="Siguiente proyecto"
+						class="grid size-9 place-items-center rounded border border-border/70 text-fg transition-colors duration-150 ease-out hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-30"
+					>
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							class="size-4"
+							aria-hidden="true"
+						>
+							<path d="M9 18l6-6-6-6" />
+						</svg>
+					</button>
+				</div>
 			</div>
 		</section>
+
+		<script is:inline>
+			(function () {
+				const track = document.getElementById("project-carousel");
+				if (!track) return;
+				const cards = Array.from(track.children);
+				const dots = Array.from(document.querySelectorAll("[data-carousel-dot]"));
+				const prevBtn = document.getElementById("carousel-prev");
+				const nextBtn = document.getElementById("carousel-next");
+				const mq = window.matchMedia("(min-width: 640px)");
+
+				function currentIndex() {
+					const active = cards.findIndex((card) => card.getAttribute("data-active") === "true");
+					return active === -1 ? 0 : active;
+				}
+
+				function setActive(index) {
+					if (mq.matches) {
+						cards.forEach((card) => card.removeAttribute("data-active"));
+						dots.forEach((dot) => {
+							dot.removeAttribute("data-active");
+							dot.removeAttribute("aria-current");
+						});
+						return;
+					}
+					cards.forEach((card, i) => {
+						if (i === index) card.setAttribute("data-active", "true");
+						else card.removeAttribute("data-active");
+					});
+					dots.forEach((dot, i) => {
+						if (i === index) {
+							dot.setAttribute("data-active", "true");
+							dot.setAttribute("aria-current", "true");
+						} else {
+							dot.removeAttribute("data-active");
+							dot.removeAttribute("aria-current");
+						}
+					});
+					if (prevBtn) prevBtn.disabled = index === 0;
+					if (nextBtn) nextBtn.disabled = index === cards.length - 1;
+				}
+
+				function scrollToIndex(index) {
+					const card = cards[index];
+					if (card) card.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+				}
+
+				const observer = new IntersectionObserver(
+					(entries) => {
+						const best = entries
+							.filter((entry) => entry.isIntersecting)
+							.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+						if (best) setActive(cards.indexOf(best.target));
+					},
+					{ root: track, threshold: [0.6] },
+				);
+				cards.forEach((card) => observer.observe(card));
+
+				dots.forEach((dot, i) => dot.addEventListener("click", () => scrollToIndex(i)));
+				prevBtn?.addEventListener("click", () => scrollToIndex(Math.max(0, currentIndex() - 1)));
+				nextBtn?.addEventListener("click", () =>
+					scrollToIndex(Math.min(cards.length - 1, currentIndex() + 1)),
+				);
+
+				mq.addEventListener("change", () => setActive(0));
+				setActive(0);
+			})();
+		</script>
 	</main>
 	<Footer />
 </BaseLayout>

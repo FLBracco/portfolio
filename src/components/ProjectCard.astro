@@ -8,23 +8,54 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<li class="border border-border/70 bg-bg p-6 transition-colors duration-150 ease-out hover:border-accent/70">
+<li
+	class="project-card w-[85%] shrink-0 snap-center rounded-lg border border-border/70 bg-bg p-6 transition-[box-shadow,border-color,transform] duration-200 ease-out hover:-translate-y-0.5 hover:border-accent/70 hover:shadow-accent focus-within:-translate-y-0.5 focus-within:border-accent/70 focus-within:shadow-accent data-[active=true]:-translate-y-0.5 data-[active=true]:border-accent/70 data-[active=true]:shadow-accent sm:w-auto sm:shrink sm:snap-align-none"
+>
 	<h3 class="text-lg font-bold">{project.name}</h3>
 	<p class="mt-2 text-sm leading-relaxed text-muted">{project.description}</p>
 	<ul class="mt-4 flex flex-wrap gap-2">
 		{
 			project.stack.map((tech) => (
-				<li class="border border-border/70 px-2.5 py-1 text-xs text-muted">{tech}</li>
+				<li class="rounded border border-border/70 px-2.5 py-1 text-xs text-muted">{tech}</li>
 			))
 		}
 	</ul>
-	<a
-		href={project.repoUrl}
-		target="_blank"
-		rel="noopener noreferrer"
-		class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-accent"
-	>
-		Ver repositorio
-		<span aria-hidden="true">→</span>
-	</a>
+	{
+		project.repoUrl || project.demoUrl ? (
+			<div class="mt-5 flex flex-wrap items-center gap-2.5">
+				{project.repoUrl && (
+					<a
+						href={project.repoUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex items-center gap-1.5 rounded border border-accent/40 px-3 py-1.5 text-sm font-semibold text-accent transition-colors duration-150 ease-out hover:border-accent hover:bg-accent hover:text-accent-fg"
+					>
+						Ver repositorio
+						<span aria-hidden="true">→</span>
+					</a>
+				)}
+				{project.demoUrl && (
+					<a
+						href={project.demoUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="inline-flex items-center gap-1.5 rounded border border-accent/40 px-3 py-1.5 text-sm font-semibold text-accent transition-colors duration-150 ease-out hover:border-accent hover:bg-accent hover:text-accent-fg"
+					>
+						Ver demo
+						<span aria-hidden="true">→</span>
+					</a>
+				)}
+			</div>
+		) : (
+			<p class="mt-5 text-sm font-semibold text-muted">Proyecto privado — repositorio no público</p>
+		)
+	}
+	{
+		project.demoUrl && (
+			<p class="mt-2 text-xs text-muted">
+				⏳ El demo está en Render (plan free): la primera carga puede tardar 30-60s en
+				"despertar" el servidor.
+			</p>
+		)
+	}
 </li>

@@ -10,6 +10,8 @@
 	--color-border: #e2e8f0;
 	--color-accent: #16a34a;
 	--color-accent-fg: #ffffff;
+
+	--shadow-accent: 0 20px 45px -18px color-mix(in oklch, var(--color-accent) 55%, transparent);
 }
 
 :root[data-theme="dark"] {
