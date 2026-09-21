@@ -30,7 +30,7 @@ export const projects: Project[] = [
 			'para desarrollo local.',
 		stack: ['TypeScript', 'Node.js', 'PostgreSQL', 'TypeORM', 'React', 'Tailwind CSS', 'Docker'],
 		repoUrl: 'https://github.com/FLBracco/CMLR',
-		demoUrl: 'https://cmlr-api.onrender.com/',
+		demoUrl: 'https://cmlr-web.onrender.com/',
 	},
 	{
 		name: 'MiniStock API',
